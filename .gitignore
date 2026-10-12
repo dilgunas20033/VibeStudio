@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+backend/.venv/
+
+# Build output and caches
+dist/
+*.tsbuildinfo
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.vite/
+coverage/
+
+# Local data and secrets
+.env
+.env.*
+!.env.example
+backend/data/
+storage/
+
+# Editors and OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.log
+
+# Playwright
+frontend/test-results/
+frontend/playwright-report/

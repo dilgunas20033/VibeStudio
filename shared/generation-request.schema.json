@@ -1,0 +1,456 @@
+{
+  "$defs": {
+    "DrumHitInput": {
+      "additionalProperties": false,
+      "properties": {
+        "drum": {
+          "enum": [
+            "kick",
+            "snare",
+            "clap",
+            "hihat",
+            "openhat",
+            "perc"
+          ],
+          "type": "string"
+        },
+        "startBeat": {
+          "maximum": 10000,
+          "minimum": 0,
+          "type": "number"
+        },
+        "velocity": {
+          "default": 100,
+          "maximum": 127,
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "startBeat",
+        "drum"
+      ],
+      "title": "DrumHitInput",
+      "type": "object"
+    },
+    "DrumsInput": {
+      "additionalProperties": false,
+      "description": "A drum pattern to build the beat around (e.g. transcribed beatboxing), in beats.",
+      "properties": {
+        "hits": {
+          "items": {
+            "$ref": "#/$defs/DrumHitInput"
+          },
+          "maxItems": 1024,
+          "minItems": 1,
+          "type": "array"
+        },
+        "mode": {
+          "default": "expand",
+          "description": "keep: the hook and verse play exactly these hits. expand: the hook adds complementary parts (hats, open hats, fills) and the verse is a thinned version.",
+          "enum": [
+            "keep",
+            "expand"
+          ],
+          "type": "string"
+        },
+        "sourceAssetId": {
+          "anyOf": [
+            {
+              "maxLength": 64,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "hits"
+      ],
+      "title": "DrumsInput",
+      "type": "object"
+    },
+    "MelodyInput": {
+      "additionalProperties": false,
+      "description": "A melody to build the beat around (e.g. transcribed humming), in beats from bar 1.",
+      "properties": {
+        "instrument": {
+          "default": "lead",
+          "enum": [
+            "lead",
+            "pluck",
+            "keys"
+          ],
+          "type": "string"
+        },
+        "mode": {
+          "default": "keep",
+          "description": "keep: the melody is used exactly as given. vary: the verse also plays a variation of it (the hook always keeps the original notes).",
+          "enum": [
+            "keep",
+            "vary"
+          ],
+          "type": "string"
+        },
+        "notes": {
+          "items": {
+            "$ref": "#/$defs/MelodyNote"
+          },
+          "maxItems": 512,
+          "minItems": 1,
+          "type": "array"
+        },
+        "sourceAssetId": {
+          "anyOf": [
+            {
+              "maxLength": 64,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Recording the melody came from; kept in the project"
+        }
+      },
+      "required": [
+        "notes"
+      ],
+      "title": "MelodyInput",
+      "type": "object"
+    },
+    "MelodyNote": {
+      "additionalProperties": false,
+      "properties": {
+        "confidence": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "durationBeats": {
+          "exclusiveMinimum": 0,
+          "maximum": 64,
+          "type": "number"
+        },
+        "pitch": {
+          "maximum": 127,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "startBeat": {
+          "maximum": 10000,
+          "minimum": 0,
+          "type": "number"
+        },
+        "velocity": {
+          "default": 100,
+          "maximum": 127,
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "startBeat",
+        "durationBeats",
+        "pitch"
+      ],
+      "title": "MelodyNote",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "What the user asks for. Every setting is optional; unset means \"decide for me\".",
+  "properties": {
+    "bassIntensity": {
+      "anyOf": [
+        {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "bpm": {
+      "anyOf": [
+        {
+          "maximum": 220.0,
+          "minimum": 40.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "complexity": {
+      "anyOf": [
+        {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "drumIntensity": {
+      "anyOf": [
+        {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "drums": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/DrumsInput"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "durationSeconds": {
+      "anyOf": [
+        {
+          "maximum": 300.0,
+          "minimum": 8.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "energy": {
+      "anyOf": [
+        {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "genre": {
+      "anyOf": [
+        {
+          "enum": [
+            "trap",
+            "drill",
+            "boombap",
+            "lofi",
+            "house",
+            "pop"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "instruments": {
+      "anyOf": [
+        {
+          "items": {
+            "enum": [
+              "kick",
+              "snare",
+              "clap",
+              "hihat",
+              "openhat",
+              "perc",
+              "bass",
+              "lead",
+              "pad",
+              "pluck",
+              "keys"
+            ],
+            "type": "string"
+          },
+          "maxItems": 11,
+          "minItems": 1,
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "interpreter": {
+      "default": "auto",
+      "description": "auto: LLM if configured, otherwise keyword rules",
+      "enum": [
+        "auto",
+        "rules",
+        "llm"
+      ],
+      "type": "string"
+    },
+    "keyMode": {
+      "anyOf": [
+        {
+          "enum": [
+            "major",
+            "minor"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "keyRoot": {
+      "anyOf": [
+        {
+          "enum": [
+            "C",
+            "C#",
+            "D",
+            "D#",
+            "E",
+            "F",
+            "F#",
+            "G",
+            "G#",
+            "A",
+            "A#",
+            "B"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "melodicComplexity": {
+      "anyOf": [
+        {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "melody": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/MelodyInput"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "mood": {
+      "anyOf": [
+        {
+          "enum": [
+            "dark",
+            "emotional",
+            "uplifting",
+            "chill",
+            "aggressive",
+            "dreamy"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "name": {
+      "anyOf": [
+        {
+          "maxLength": 120,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "prompt": {
+      "default": "",
+      "maxLength": 1000,
+      "type": "string"
+    },
+    "seed": {
+      "anyOf": [
+        {
+          "maximum": 2147483647,
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "structure": {
+      "anyOf": [
+        {
+          "enum": [
+            "loop",
+            "short",
+            "full"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "title": "GenerationRequest",
+  "type": "object"
+}

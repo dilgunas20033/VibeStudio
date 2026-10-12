@@ -1,0 +1,697 @@
+{
+  "$defs": {
+    "AiPromptRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "createdAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_\\-]+$",
+          "type": "string"
+        },
+        "prompt": {
+          "maxLength": 4000,
+          "type": "string"
+        },
+        "summary": {
+          "anyOf": [
+            {
+              "maxLength": 4000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "id",
+        "createdAt",
+        "prompt",
+        "summary"
+      ],
+      "title": "AiPromptRecord",
+      "type": "object"
+    },
+    "ArrangementSection": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_\\-]+$",
+          "type": "string"
+        },
+        "lengthBeats": {
+          "exclusiveMinimum": 0,
+          "maximum": 100000,
+          "type": "number"
+        },
+        "name": {
+          "examples": [
+            "Intro",
+            "Verse 1",
+            "Hook"
+          ],
+          "maxLength": 60,
+          "minLength": 1,
+          "type": "string"
+        },
+        "startBeat": {
+          "maximum": 100000,
+          "minimum": 0,
+          "type": "number"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "startBeat",
+        "lengthBeats"
+      ],
+      "title": "ArrangementSection",
+      "type": "object"
+    },
+    "AudioAsset": {
+      "additionalProperties": false,
+      "description": "Immutable reference to stored audio. Edits never modify the source file.",
+      "properties": {
+        "channels": {
+          "anyOf": [
+            {
+              "maximum": 8,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "durationSeconds": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_\\-]+$",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 255,
+          "minLength": 1,
+          "type": "string"
+        },
+        "sampleRate": {
+          "anyOf": [
+            {
+              "maximum": 384000,
+              "minimum": 8000,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "uri": {
+          "maxLength": 1024,
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "uri",
+        "sha256",
+        "sampleRate",
+        "channels",
+        "durationSeconds"
+      ],
+      "title": "AudioAsset",
+      "type": "object"
+    },
+    "Clip": {
+      "additionalProperties": false,
+      "description": "Places a pattern (MIDI) or an audio asset on a track's timeline.",
+      "properties": {
+        "assetId": {
+          "anyOf": [
+            {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_\\-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_\\-]+$",
+          "type": "string"
+        },
+        "lengthBeats": {
+          "exclusiveMinimum": 0,
+          "maximum": 100000,
+          "type": "number"
+        },
+        "offsetBeats": {
+          "default": 0.0,
+          "description": "Where inside the source the clip starts",
+          "maximum": 100000,
+          "minimum": 0,
+          "type": "number"
+        },
+        "patternId": {
+          "anyOf": [
+            {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_\\-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "startBeat": {
+          "maximum": 100000,
+          "minimum": 0,
+          "type": "number"
+        },
+        "trackId": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_\\-]+$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "trackId",
+        "patternId",
+        "assetId",
+        "startBeat",
+        "lengthBeats",
+        "offsetBeats"
+      ],
+      "title": "Clip",
+      "type": "object"
+    },
+    "Effect": {
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "default": true,
+          "type": "boolean"
+        },
+        "id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_\\-]+$",
+          "type": "string"
+        },
+        "params": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          },
+          "type": "object"
+        },
+        "type": {
+          "maxLength": 64,
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "enabled",
+        "params"
+      ],
+      "title": "Effect",
+      "type": "object"
+    },
+    "Instrument": {
+      "additionalProperties": false,
+      "description": "Instrument reference. `type` selects an engine implementation. `params` are\nengine-specific and validated by that engine, not by this schema.",
+      "properties": {
+        "params": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          },
+          "type": "object"
+        },
+        "preset": {
+          "anyOf": [
+            {
+              "maxLength": 120,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "type": {
+          "examples": [
+            "synth",
+            "drumkit"
+          ],
+          "maxLength": 64,
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "preset",
+        "params"
+      ],
+      "title": "Instrument",
+      "type": "object"
+    },
+    "MidiNote": {
+      "additionalProperties": false,
+      "properties": {
+        "confidence": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Transcription confidence (0-1) for notes detected from audio. Null for notes entered or confirmed by the user."
+        },
+        "durationBeats": {
+          "exclusiveMinimum": 0,
+          "maximum": 10000,
+          "type": "number"
+        },
+        "id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_\\-]+$",
+          "type": "string"
+        },
+        "pitch": {
+          "description": "MIDI note number",
+          "maximum": 127,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "startBeat": {
+          "description": "Offset from the pattern start, in beats",
+          "maximum": 100000,
+          "minimum": 0,
+          "type": "number"
+        },
+        "velocity": {
+          "default": 100,
+          "maximum": 127,
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "pitch",
+        "startBeat",
+        "durationBeats",
+        "velocity",
+        "confidence"
+      ],
+      "title": "MidiNote",
+      "type": "object"
+    },
+    "MixerSettings": {
+      "additionalProperties": false,
+      "properties": {
+        "mute": {
+          "default": false,
+          "type": "boolean"
+        },
+        "pan": {
+          "default": 0.0,
+          "maximum": 1.0,
+          "minimum": -1.0,
+          "type": "number"
+        },
+        "solo": {
+          "default": false,
+          "type": "boolean"
+        },
+        "volumeDb": {
+          "default": 0.0,
+          "maximum": 12.0,
+          "minimum": -96.0,
+          "type": "number"
+        }
+      },
+      "required": [
+        "volumeDb",
+        "pan",
+        "mute",
+        "solo"
+      ],
+      "title": "MixerSettings",
+      "type": "object"
+    },
+    "MusicalKey": {
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "default": "minor",
+          "enum": [
+            "major",
+            "minor"
+          ],
+          "type": "string"
+        },
+        "root": {
+          "default": "C",
+          "enum": [
+            "C",
+            "C#",
+            "D",
+            "D#",
+            "E",
+            "F",
+            "F#",
+            "G",
+            "G#",
+            "A",
+            "A#",
+            "B"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "root",
+        "mode"
+      ],
+      "title": "MusicalKey",
+      "type": "object"
+    },
+    "Pattern": {
+      "additionalProperties": false,
+      "description": "A reusable block of MIDI notes. Clips place patterns on the timeline.",
+      "properties": {
+        "id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_\\-]+$",
+          "type": "string"
+        },
+        "lengthBeats": {
+          "exclusiveMinimum": 0,
+          "maximum": 10000,
+          "type": "number"
+        },
+        "name": {
+          "maxLength": 120,
+          "minLength": 1,
+          "type": "string"
+        },
+        "notes": {
+          "items": {
+            "$ref": "#/$defs/MidiNote"
+          },
+          "maxItems": 50000,
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "lengthBeats",
+        "notes"
+      ],
+      "title": "Pattern",
+      "type": "object"
+    },
+    "TimeSignature": {
+      "additionalProperties": false,
+      "properties": {
+        "denominator": {
+          "default": 4,
+          "enum": [
+            1,
+            2,
+            4,
+            8,
+            16,
+            32
+          ],
+          "type": "integer"
+        },
+        "numerator": {
+          "default": 4,
+          "maximum": 32,
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "numerator",
+        "denominator"
+      ],
+      "title": "TimeSignature",
+      "type": "object"
+    },
+    "Track": {
+      "additionalProperties": false,
+      "properties": {
+        "color": {
+          "default": "#7c5cff",
+          "pattern": "^#[0-9a-fA-F]{6}$",
+          "type": "string"
+        },
+        "effects": {
+          "items": {
+            "$ref": "#/$defs/Effect"
+          },
+          "maxItems": 64,
+          "type": "array"
+        },
+        "id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_\\-]+$",
+          "type": "string"
+        },
+        "instrument": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Instrument"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "kind": {
+          "enum": [
+            "instrument",
+            "drums",
+            "audio"
+          ],
+          "type": "string"
+        },
+        "mixer": {
+          "$ref": "#/$defs/MixerSettings"
+        },
+        "name": {
+          "maxLength": 120,
+          "minLength": 1,
+          "type": "string"
+        },
+        "role": {
+          "anyOf": [
+            {
+              "maxLength": 64,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Musical role hint, e.g. kick, 808, lead, vocal_lead"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "kind",
+        "role",
+        "color",
+        "instrument",
+        "mixer",
+        "effects"
+      ],
+      "title": "Track",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "aiHistory": {
+      "items": {
+        "$ref": "#/$defs/AiPromptRecord"
+      },
+      "maxItems": 1000,
+      "type": "array"
+    },
+    "assets": {
+      "items": {
+        "$ref": "#/$defs/AudioAsset"
+      },
+      "maxItems": 2048,
+      "type": "array"
+    },
+    "bpm": {
+      "default": 120.0,
+      "maximum": 400.0,
+      "minimum": 20.0,
+      "type": "number"
+    },
+    "clips": {
+      "items": {
+        "$ref": "#/$defs/Clip"
+      },
+      "maxItems": 10000,
+      "type": "array"
+    },
+    "id": {
+      "maxLength": 64,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_\\-]+$",
+      "type": "string"
+    },
+    "key": {
+      "$ref": "#/$defs/MusicalKey"
+    },
+    "name": {
+      "maxLength": 120,
+      "minLength": 1,
+      "type": "string"
+    },
+    "patterns": {
+      "items": {
+        "$ref": "#/$defs/Pattern"
+      },
+      "maxItems": 2048,
+      "type": "array"
+    },
+    "schemaVersion": {
+      "const": 1,
+      "default": 1,
+      "type": "integer"
+    },
+    "sections": {
+      "items": {
+        "$ref": "#/$defs/ArrangementSection"
+      },
+      "maxItems": 256,
+      "type": "array"
+    },
+    "timeSignature": {
+      "$ref": "#/$defs/TimeSignature"
+    },
+    "tracks": {
+      "items": {
+        "$ref": "#/$defs/Track"
+      },
+      "maxItems": 256,
+      "type": "array"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "id",
+    "name",
+    "bpm",
+    "key",
+    "timeSignature",
+    "tracks",
+    "patterns",
+    "clips",
+    "sections",
+    "assets",
+    "aiHistory"
+  ],
+  "title": "ProjectDocument",
+  "type": "object"
+}

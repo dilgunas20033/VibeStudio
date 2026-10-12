@@ -1,0 +1,4 @@
+node_modules
+dist
+src/types/project.generated.ts
+package-lock.json

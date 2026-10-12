@@ -1,0 +1,263 @@
+{
+  "$defs": {
+    "MusicalKey": {
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "default": "minor",
+          "enum": [
+            "major",
+            "minor"
+          ],
+          "type": "string"
+        },
+        "root": {
+          "default": "C",
+          "enum": [
+            "C",
+            "C#",
+            "D",
+            "D#",
+            "E",
+            "F",
+            "F#",
+            "G",
+            "G#",
+            "A",
+            "A#",
+            "B"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "root",
+        "mode"
+      ],
+      "title": "MusicalKey",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Fully resolved parameters the composer runs on. Shown to the user before/after.",
+  "properties": {
+    "bars": {
+      "type": "integer"
+    },
+    "bassIntensity": {
+      "type": "number"
+    },
+    "bpm": {
+      "type": "number"
+    },
+    "complexity": {
+      "type": "number"
+    },
+    "composer": {
+      "const": "procedural-v1",
+      "default": "procedural-v1",
+      "type": "string"
+    },
+    "drumBars": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Length of the supplied drum pattern, in bars"
+    },
+    "drumIntensity": {
+      "type": "number"
+    },
+    "drumMode": {
+      "anyOf": [
+        {
+          "enum": [
+            "keep",
+            "expand"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "energy": {
+      "type": "number"
+    },
+    "genre": {
+      "enum": [
+        "trap",
+        "drill",
+        "boombap",
+        "lofi",
+        "house",
+        "pop"
+      ],
+      "type": "string"
+    },
+    "instruments": {
+      "items": {
+        "enum": [
+          "kick",
+          "snare",
+          "clap",
+          "hihat",
+          "openhat",
+          "perc",
+          "bass",
+          "lead",
+          "pad",
+          "pluck",
+          "keys"
+        ],
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "interpreter": {
+      "enum": [
+        "rules",
+        "llm"
+      ],
+      "type": "string"
+    },
+    "interpreterModel": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "key": {
+      "$ref": "#/$defs/MusicalKey"
+    },
+    "melodicComplexity": {
+      "type": "number"
+    },
+    "melodyBars": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Length of the supplied melody, in bars"
+    },
+    "melodyInstrument": {
+      "anyOf": [
+        {
+          "enum": [
+            "lead",
+            "pluck",
+            "keys"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "melodyMode": {
+      "anyOf": [
+        {
+          "enum": [
+            "keep",
+            "vary"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "mood": {
+      "enum": [
+        "dark",
+        "emotional",
+        "uplifting",
+        "chill",
+        "aggressive",
+        "dreamy"
+      ],
+      "type": "string"
+    },
+    "seed": {
+      "type": "integer"
+    },
+    "sources": {
+      "additionalProperties": {
+        "enum": [
+          "user",
+          "prompt",
+          "melody",
+          "default"
+        ],
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "structure": {
+      "enum": [
+        "loop",
+        "short",
+        "full"
+      ],
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "warnings": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "title",
+    "genre",
+    "mood",
+    "energy",
+    "bpm",
+    "key",
+    "structure",
+    "bars",
+    "instruments",
+    "complexity",
+    "drumIntensity",
+    "bassIntensity",
+    "melodicComplexity",
+    "seed",
+    "sources",
+    "interpreter",
+    "interpreterModel",
+    "composer",
+    "melodyBars",
+    "melodyInstrument",
+    "melodyMode",
+    "drumBars",
+    "drumMode",
+    "warnings"
+  ],
+  "title": "GenerationPlan",
+  "type": "object"
+}

@@ -1,0 +1,44 @@
+{
+  "name": "vibestudio-frontend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -b --noEmit",
+    "lint": "oxlint src",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "gen:types": "json2ts -i ../shared/project.schema.json -o src/types/project.generated.ts --bannerComment \"/* Generated from shared/project.schema.json by npm run gen:types. Do not edit. */\" --additionalProperties false --maxItems -1 && json2ts -i ../shared/generation-request.schema.json -o src/types/generation-request.generated.ts --bannerComment \"/* Generated from shared/generation-request.schema.json by npm run gen:types. Do not edit. */\" --additionalProperties false --maxItems -1 && json2ts -i ../shared/generation-plan.schema.json -o src/types/generation-plan.generated.ts --bannerComment \"/* Generated from shared/generation-plan.schema.json by npm run gen:types. Do not edit. */\" --additionalProperties false --maxItems -1",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "tone": "15.1.22",
+    "zustand": "^5.0.15"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "jsdom": "^29.1.1",
+    "json-schema-to-typescript": "^16.0.0",
+    "oxlint": "^1.81.0",
+    "prettier": "^3.9.10",
+    "tailwindcss": "^4.3.3",
+    "typescript": "~6.0.2",
+    "vite": "^8.3.0",
+    "vitest": "^5.0.4"
+  }
+}

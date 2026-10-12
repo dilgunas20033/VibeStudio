@@ -1,0 +1,27 @@
+{
+  "name": "vibestudio",
+  "private": true,
+  "version": "0.1.0",
+  "description": "VibeStudio: AI-first digital audio workstation (development workspace)",
+  "type": "module",
+  "scripts": {
+    "setup": "npm install && node scripts/setup.mjs",
+    "dev": "concurrently -k -n api,web -c magenta,cyan \"npm:dev:backend\" \"npm:dev:frontend\"",
+    "dev:backend": "node scripts/py.mjs -m alembic upgrade head && node scripts/py.mjs -m uvicorn app.main:app --reload --port 8000",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "migrate": "node scripts/py.mjs -m alembic upgrade head",
+    "gen:schema": "node scripts/py.mjs scripts/export_schema.py && npm --prefix frontend run gen:types",
+    "test": "npm run test:backend && npm run test:frontend",
+    "test:backend": "node scripts/py.mjs -m pytest",
+    "test:frontend": "npm --prefix frontend test",
+    "test:e2e": "npm --prefix frontend run test:e2e",
+    "lint": "node scripts/py.mjs -m ruff check . && node scripts/py.mjs -m ruff format --check . && npm --prefix frontend run lint && npm --prefix frontend run format:check",
+    "format": "node scripts/py.mjs -m ruff format . && node scripts/py.mjs -m ruff check --fix . && npm --prefix frontend run format",
+    "typecheck": "npm --prefix frontend run typecheck",
+    "build": "npm --prefix frontend run build",
+    "check": "npm run lint && npm run typecheck && npm test && npm run build"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.6"
+  }
+}

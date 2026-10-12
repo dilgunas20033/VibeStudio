@@ -1,0 +1,42 @@
+# Optional containerized development stack: PostgreSQL + backend + frontend.
+# Local development without Docker works too (SQLite); see README.md.
+# Redis and a processing worker are added when the background job queue lands.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: vibestudio
+      POSTGRES_PASSWORD: vibestudio
+      POSTGRES_DB: vibestudio
+    ports: ["5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vibestudio"]
+      interval: 3s
+      retries: 20
+
+  backend:
+    build: ./backend
+    environment:
+      VIBESTUDIO_DATABASE_URL: postgresql+psycopg://vibestudio:vibestudio@db:5432/vibestudio
+    command: sh -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+    ports: ["8000:8000"]
+    volumes: [./backend/app:/app/app, ./backend/alembic:/app/alembic]
+    depends_on:
+      db: { condition: service_healthy }
+
+  frontend:
+    image: node:22-alpine
+    working_dir: /workspace/frontend
+    environment:
+      VIBESTUDIO_BACKEND_URL: http://backend:8000
+    command: sh -c "npm ci && npx vite --host 0.0.0.0"
+    ports: ["5173:5173"]
+    volumes:
+      - ./frontend:/workspace/frontend
+      - ./shared:/workspace/shared
+      - /workspace/frontend/node_modules
+    depends_on: [backend]
+
+volumes:
+  pgdata:
